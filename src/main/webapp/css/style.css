@@ -1,0 +1,40 @@
+ body {
+            background-color: #f0f3f4; 
+            color: #2c3e50;
+        }
+.navbar-custom {
+            background-color: #27ae60; 
+        }
+ .navbar-custom .nav-link {
+            color: #ffffff;
+        }
+ .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+            color: #ecf0f1; 
+        }
+.main-container {
+            margin: 20px auto;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        }
+.btn-success-custom {
+            background-color: #2ecc71; 
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+.btn-success-custom:hover {
+        background-color: #27ae60; 
+        }
+.form-label {
+            font-weight: bold;
+        }
+
+
+

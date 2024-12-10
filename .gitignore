@@ -1,0 +1,9 @@
+# Ignorar pastas de build e target
+/build/
+/target/
+
+# Ignorar arquivo específico
+/Sistema/src/main/java/pecas/dao/MySqlConnection.java
+
+# Ignorar pasta de recursos Java
+/Sistema/src/main/resources/
