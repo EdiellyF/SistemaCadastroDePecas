@@ -32,76 +32,86 @@ public class CadastrarPecaController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		
+		
 		this.doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        
-        
-        
-        String nome; 
-        String fornecedor;
-        String marca;
-        int quantidadeAtual;
-        int quantidadeMinima;
-        String mensagem = "";
-        
-       
-        
-        List<Boolean> validacoes = new ArrayList<>();
-        validacoes.add(request.getParameter("marca") != null && !request.getParameter("marca").isEmpty());
-        validacoes.add(request.getParameter("fornecedor") != null && !request.getParameter("fornecedor").isEmpty());
-        validacoes.add(request.getParameter("nome") != null && !request.getParameter("nome").isEmpty());
-        validacoes.add(request.getParameter("quantidadeAtual") != null && !request.getParameter("quantidadeAtual").isEmpty());
-        validacoes.add(request.getParameter("quantidadeMinima") != null && !request.getParameter("quantidadeMinima").isEmpty());
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    request.setCharacterEncoding("UTF-8");
+	    response.setContentType("text/html; charset=UTF-8");
 
-        boolean todasValidacoesPassam = validacoes.stream().allMatch(Boolean::booleanValue);
+	    String nome = request.getParameter("nome");
+	    String fornecedor = request.getParameter("fornecedor");
+	    String marca = request.getParameter("marca");
+	    String quantidadeAtualStr = request.getParameter("quantidadeAtual");
+	    String quantidadeMinimaStr = request.getParameter("quantidadeMinima");
+
+	    List<String> erros = validarCampos(nome, fornecedor, marca, quantidadeAtualStr, quantidadeMinimaStr);
+	    
+	    if (erros.isEmpty()) {
+	        int quantidadeAtual = Integer.parseInt(quantidadeAtualStr);
+	        int quantidadeMinima = Integer.parseInt(quantidadeMinimaStr);
+	        
+	        Peca peca = new Peca(nome, fornecedor, marca, quantidadeAtual, quantidadeMinima);
+	        peca.salvar();
+	        
+	        String mensagem = "Peça cadastrada com sucesso!";
+	        request.setAttribute("mensagem", mensagem);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastrarproduto");
+	        dispatcher.forward(request, response);
+	    } else {
+	        String mensagem = String.join("<br>", erros);
+	        request.setAttribute("mensagem", mensagem);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastrarproduto");
+	        dispatcher.forward(request, response);
+	    }
+	}
+    
+    
+    private List<String> validarCampos(String nome, String fornecedor, String marca, String quantidadeAtual, String quantidadeMinima) {
+        List<String> erros = new ArrayList<>();
         
-        if(todasValidacoesPassam) {
-            nome = request.getParameter("nome");
-            fornecedor = request.getParameter("fornecedor");
-            marca = request.getParameter("marca");
-            quantidadeAtual = Integer.parseInt(request.getParameter("quantidadeAtual"));
-            quantidadeMinima = Integer.parseInt(request.getParameter("quantidadeMinima"));
-            
-            Peca peca = new Peca(nome, fornecedor, marca, quantidadeAtual, quantidadeMinima);
-            peca.salvar();
-            
-            mensagem = "Peça cadastrada com sucesso!";
-            request.setAttribute("mensagem", mensagem);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastrarproduto");
-            dispatcher.forward(request, response);
-
-
-        }else {
-            List<String> parametros = new ArrayList<>();
-            parametros.add("marca");
-            parametros.add("fornecedor");
-            parametros.add("nome");
-            parametros.add("quantidadeAtual");
-            parametros.add("quantidadeMinima");
-
-           
-            for (int i = 0; i < validacoes.size(); i++) {
-                if (!validacoes.get(i)) {
-                    mensagem += (parametros.get(i) + " não preenchindo. <br>");
-                }
-            }
-          
-            request.setAttribute("mensagem", mensagem);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastrarproduto");
-            dispatcher.forward(request, response);
+        if (isNullOrEmpty(nome)) {
+            erros.add("Nome não preenchido.");
+        }
+        if (isNullOrEmpty(fornecedor)) {
+            erros.add("Fornecedor não preenchido.");
+        }
+        if (isNullOrEmpty(marca)) {
+            erros.add("Marca não preenchida.");
+        }
+        if (isNullOrEmpty(quantidadeAtual) || !isNumeric(quantidadeAtual)) {
+            erros.add("Quantidade atual inválida.");
+        }
+        if (isNullOrEmpty(quantidadeMinima) || !isNumeric(quantidadeMinima)) {
+            erros.add("Quantidade mínima inválida.");
         }
         
-        
-              
-        
-        
+        return erros;
     }
-
+    
+    
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.isEmpty();
+    }
+    
+    
+    
+    private boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+     }
+    
+    }
+    
+    
+    
 }

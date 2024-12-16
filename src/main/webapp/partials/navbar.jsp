@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -12,7 +13,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="cadastrarProduto.jsp">Cadastrar Produto</a>
+                        <a class="nav-link" href="cadastrarproduto">Cadastrar Produto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="consultarProduto.jsp">Consultar Produto</a>
@@ -21,3 +22,7 @@
             </div>
         </div>
     </nav>
+    
+    
+ 
+    

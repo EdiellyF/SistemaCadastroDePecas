@@ -1,5 +1,7 @@
 package pecas.model;
 
+import java.util.ArrayList;
+
 import pecas.dao.PecaDao;
 
 public class Peca {
@@ -115,6 +117,13 @@ public class Peca {
 	public void salvar() {
 		new PecaDao().cadastrarPeca(this);
 	}
+	
+	
+	public ArrayList<Peca> buscarPecaPorNome(String nome){
+		return new PecaDao().buscarPecaPorNome(nome);
+	}
+	
+	
 	
 	
 	

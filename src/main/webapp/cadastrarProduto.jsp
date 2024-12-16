@@ -13,8 +13,29 @@
 <body>
    
    
-   
      <%@ include file="/partials/navbar.jsp" %>
+     
+	<% 
+	    String mensagem = (String) request.getAttribute("mensagem"); 
+	    if (mensagem != null && !mensagem.isEmpty()) { 
+	        if(mensagem.equals("Peça cadastrada com sucesso!")){ 
+	%>
+	    <div class="alert alert-success alert-dismissible fade show" role="alert">
+	        <strong>Sucesso!</strong> <%= mensagem %>
+	        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	    </div>
+	<% 
+	        } else { 
+	%>
+	    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+	        <strong>Erro!</strong> <%= mensagem %>
+	        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	    </div>
+	<% 
+	        }
+	    }
+	%>
+
 
     <!-- Formulário -->
     <main class="main-container">
@@ -48,19 +69,11 @@
     </main>
     
     <h1>
-		  <% 
-		       String mensagem = (String) request.getAttribute("mensagem");
-		       if(mensagem != null && !mensagem.isEmpty()){
-		           out.print(mensagem);  
-		       }
-		    %>
+	
     </h1>
     
 
- 
-
-   
-  
+		
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

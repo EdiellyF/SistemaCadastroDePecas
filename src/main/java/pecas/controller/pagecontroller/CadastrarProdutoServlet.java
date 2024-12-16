@@ -1,4 +1,4 @@
-package pecas.controller;
+package pecas.controller.pagecontroller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/cadastrarproduto")
-public class CadastrarProdutoPageServlet extends HttpServlet {
+public class CadastrarProdutoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

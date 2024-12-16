@@ -2,7 +2,9 @@ package pecas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import pecas.model.Peca;
 
@@ -54,5 +56,58 @@ public class PecaDao {
 	        }
 	    }
 	}
+	
+	public ArrayList<Peca> buscarPecaPorNome(String nome) {
+	    String sql = "SELECT * FROM PECAS WHERE NomePeca LIKE ?";
+	    ResultSet rs = null;
+	    PreparedStatement pStatement = null;
+	    Connection conn = null;
+	    Peca peca = null;
+	    ArrayList<Peca> pecas = new ArrayList<Peca>();  
+
+	    try {
+	        conn = new MySqlConnection().getConnection();
+	        if (conn == null) {
+	            System.out.println("Erro: Falha ao conectar ao banco de dados.");
+	        } else {
+	            pStatement = conn.prepareStatement(sql);
+	            pStatement.setString(1, "%" + nome + "%");  
+
+	            rs = pStatement.executeQuery();
+
+	            while (rs.next()) {
+	                peca = new Peca();
+	                peca.setIdPeca(rs.getInt("idPeca"));  
+	                peca.setNomePeca(rs.getString("NomePeca"));  
+	                peca.setMarca(rs.getString("Marca"));
+	                peca.setQuantidadeAtual(rs.getInt("QuantidadeAtual"));
+	                peca.setQuantidadeMinima(rs.getInt("QuantidadeMinima"));
+	                peca.setFornecedor(rs.getString("Fornecedor"));
+
+	                pecas.add(peca);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Erro ao executar operação no banco de dados: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            if (pStatement != null) {
+	                pStatement.close();
+	            }
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Erro ao fechar recursos: " + e.getMessage());
+	        }
+	    }
+
+	    return pecas;  
+	}
+
 
 }
